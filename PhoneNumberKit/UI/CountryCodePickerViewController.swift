@@ -25,13 +25,16 @@ public class CountryCodePickerViewController: UITableViewController {
 
     var shouldRestoreNavigationBarToHidden = false
 
-    var hasCurrent = true
-    var hasCommon = true
+    var hasCurrent = false
+    var hasCommon = false
 
+    var selectedCountries: [String] = ["BE", "ES", "FR", "IT", "NL", "PT", "UK", "US"]
+    
     lazy var allCountries = utility
         .allCountries()
         .compactMap({ Country(for: $0, with: self.utility) })
         .sorted(by: { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending })
+        .filter { selectedCountries.contains($0.code) }
 
     lazy var countries: [[Country]] = {
         let countries = allCountries
